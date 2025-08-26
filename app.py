@@ -8,13 +8,13 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)
-model=load_model('best_model.h5')
+model=load_model('best_model.keras')
 
-class_names = ['Corn___Common_rust', 'Corn___healthy', 'Corn___Northern_Leaf_Blight', 'Potato___Early_blight'
-    , 'Potato___healthy', 'Potato___Late_blight', 'Tomato___Bacterial_spot', 'Tomato___Early_blight',
-               'Tomato___healthy',
-               'Tomato___Late_blight', 'Tomato___Leaf_Mold', 'Tomato___Tomato_mosaic_virus',
-               'Tomato___Tomato_Yellow_Leaf_Curl_Virus']
+class_names = ['Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_', 'Corn_(maize)___healthy', 'Corn_(maize)___Northern_Leaf_Blight'
+    , 'Potato___Early_blight', 'Potato___healthy', 'Potato___Late_blight', 'Tomato__Target_Spot',
+               'Tomato__Tomato_mosaic_virus','Tomato__Tomato_YellowLeaf__Curl_Virus',
+               'Tomato_Bacterial_spot', 'Tomato_Early_blight', 'Tomato_healthy','Tomato_Late_blight',
+               'Tomato_Leaf_Mold','Tomato_Septoria_leaf_spot','Tomato_Spider_mites_Two_spotted_spider_mite']
 def process_image(image_path):
     img = image.load_img(image_path, target_size=(224, 224))
     img_array = image.img_to_array(img)

@@ -1,24 +1,28 @@
 import keras
 import tensorflow as tf
 from keras import models, layers
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras.callbacks import EarlyStopping,ModelCheckpoint
 
-from keras.applications import MobileNetV2
+from keras.applications import MobileNet
 
-
-pretrained_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(224,224, 3))
+pretrained_model = MobileNet(
+    weights='imagenet',
+    include_top=False,
+    input_shape=(224, 224, 3)
+)
 pretrained_model.trainable = False
 
 train = tf.keras.preprocessing.image_dataset_from_directory(
-    'crop_images',
+    'C:\\Users\\PC\\Desktop\\plantdata\\Dataset',
     validation_split=0.2,
     subset="training",
     seed=42,
-    image_size=(224, 224),
+    image_size=(224,224),
     batch_size=16,
+
 )
 test = tf.keras.preprocessing.image_dataset_from_directory(
-    'crop_images',
+    'C:\\Users\\PC\\Desktop\\plantdata\\Dataset',
     validation_split=0.2,
     subset="validation",
     seed=42,
@@ -60,12 +64,20 @@ early_stop =EarlyStopping(
     monitor='val_loss', patience=2,
     restore_best_weights=True,
     verbose=1)
-checkpoint = ModelCheckpoint('best_model.h5', save_best_only=True)
+
+checkpoint = ModelCheckpoint(
+    filepath="best_model.keras",   # <-- Change extension here
+    monitor="val_loss",           # or your chosen metric
+    save_best_only=True,
+    save_weights_only=False,      # Save full model
+    mode="min"                    # "min" for loss, "max" for accuracy
+)
 
 model.compile(
     optimizer='adam',
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy']
 )
-model.fit(train, validation_data=test, epochs=5, callbacks=[early_stop, checkpoint])
+model.fit(train, validation_data=test, epochs=10, callbacks=[early_stop,checkpoint])
 model.evaluate(test)
+

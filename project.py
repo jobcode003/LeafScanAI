@@ -1,10 +1,13 @@
 import numpy as np
 from keras.models import load_model
 from keras.preprocessing import image
-model=load_model('best_model.h5')
-class_names=['Corn___Common_rust','Corn___healthy','Corn___Northern_Leaf_Blight','Potato___Early_blight'
-    ,'Potato___healthy','Potato___Late_blight','Tomato___Bacterial_spot','Tomato___Early_blight','Tomato___healthy',
-    'Tomato___Late_blight','Tomato___Leaf_Mold','Tomato___Tomato_mosaic_virus','Tomato___Tomato_Yellow_Leaf_Curl_Virus']
+model=load_model('best_model.keras')
+
+class_names = ['Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_', 'Corn_(maize)___healthy', 'Corn_(maize)___Northern_Leaf_Blight'
+    , 'Potato___Early_blight', 'Potato___healthy', 'Potato___Late_blight', 'Tomato__Target_Spot',
+               'Tomato__Tomato_mosaic_virus','Tomato__Tomato_YellowLeaf__Curl_Virus',
+               'Tomato_Bacterial_spot', 'Tomato_Early_blight', 'Tomato_healthy','Tomato_Late_blight',
+               'Tomato_Leaf_Mold','Tomato_Septoria_leaf_spot','Tomato_Spider_mites_Two_spotted_spider_mite']
 def process(image_path):
     img = image.load_img(image_path, target_size=(224, 224))
     img_array = image.img_to_array(img)
@@ -15,8 +18,6 @@ def process(image_path):
     predicted_class = class_names[predicted_class_index]
     confidence = round(100 * np.max(predictions[0]), 2)
     return predicted_class, confidence
-image__path='C:\\Users\\PC\\Desktop\\computer_vision\\crop_images\\Potato___Early_blight\\image (296).jpg'
+image__path='C:\\Users\\PC\\Desktop\\plantdata\\Dataset\\Corn_(maize)___Common_rust_\\RS_Rust 1565.JPG'
 predicted_class, confidence = process(image__path)
 print(f"Predicted: {predicted_class} ({confidence}% confidence)")
-if predicted_class == 'Potato___Early_blight':
-    print("what courses it? ",'Common rust is caused by the fungus Puccinia sorghi and occurs every growing season')
